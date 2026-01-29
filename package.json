@@ -1,0 +1,22 @@
+{
+  "name": "12seasons-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for 12Seasons",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "cloudflare",
+    "worker"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "vitest": "^2.0.0",
+    "wrangler": "^3.0.0"
+  }
+}
