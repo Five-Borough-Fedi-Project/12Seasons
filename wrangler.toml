@@ -1,4 +1,4 @@
-name = "12seasons-worker"
+name = "12seasons"
 main = "src/index.js"
 compatibility_date = "2026-01-28"
 
