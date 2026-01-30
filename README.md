@@ -55,6 +55,10 @@ Deploy to Cloudflare:
 npm run deploy
 ```
 
+Add this to your Mastodon appearance CSS:
+
+`@import url('/weather.css');`
+
 ## Configuration
 
 Edit `wrangler.toml` to configure:

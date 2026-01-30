@@ -52,41 +52,49 @@ export default {
 
       const cssWind = `
         /* WEATHER: WIND */
-        body::before,
-        body::after { 
-          content: ""; position: fixed; top: 0; left: 0; width: 200%; height: 100%; 
-          pointer-events: none; z-index: 9999; 
+        @keyframes wisp-drift {
+          0% { transform: translateX(100vw) translateY(0) rotate(0deg); opacity: 0; }
+          5% { opacity: 0.4; }
+          50% { transform: translateX(-20vw) translateY(30px) rotate(15deg); opacity: 0.3; }
+          95% { opacity: 0; }
+          100% { transform: translateX(-120vw) translateY(-20px) rotate(-10deg); opacity: 0; }
+        }
+        @keyframes wisp-drift-2 {
+          0% { transform: translateX(100vw) translateY(0) rotate(5deg); opacity: 0; }
+          10% { opacity: 0.3; }
+          50% { transform: translateX(-10vw) translateY(-40px) rotate(-20deg); opacity: 0.25; }
+          90% { opacity: 0; }
+          100% { transform: translateX(-130vw) translateY(10px) rotate(5deg); opacity: 0; }
         }
         body::before {
-          background: repeating-linear-gradient(
-            95deg,
-            transparent 0px,
-            transparent 80px,
-            rgba(255,255,255,0.03) 80px,
-            rgba(255,255,255,0.06) 120px,
-            rgba(255,255,255,0.03) 160px,
-            transparent 160px,
-            transparent 300px
-          );
-          animation: wind-wisp 4s linear infinite;
+          content: "";
+          position: fixed;
+          top: 30%;
+          left: 0;
+          width: 300px;
+          height: 60px;
+          pointer-events: none;
+          z-index: 9999;
+          background: radial-gradient(ellipse 150px 8px at center, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 40%, transparent 70%),
+                      radial-gradient(ellipse 100px 5px at 60% 70%, rgba(255,255,255,0.3) 0%, transparent 60%),
+                      radial-gradient(ellipse 80px 4px at 30% 40%, rgba(255,255,255,0.25) 0%, transparent 50%);
+          filter: blur(2px);
+          animation: wisp-drift 4s ease-in-out infinite;
         }
         body::after {
-          background: repeating-linear-gradient(
-            92deg,
-            transparent 0px,
-            transparent 120px,
-            rgba(255,255,255,0.02) 120px,
-            rgba(255,255,255,0.05) 180px,
-            rgba(255,255,255,0.02) 240px,
-            transparent 240px,
-            transparent 400px
-          );
-          animation: wind-wisp 6s linear infinite;
-          animation-delay: -2s;
-        }
-        @keyframes wind-wisp { 
-          from { transform: translateX(0); } 
-          to { transform: translateX(-50%); } 
+          content: "";
+          position: fixed;
+          top: 60%;
+          left: 0;
+          width: 250px;
+          height: 50px;
+          pointer-events: none;
+          z-index: 9999;
+          background: radial-gradient(ellipse 120px 6px at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.15) 50%, transparent 70%),
+                      radial-gradient(ellipse 70px 4px at 70% 60%, rgba(255,255,255,0.2) 0%, transparent 55%);
+          filter: blur(3px);
+          animation: wisp-drift-2 6s ease-in-out infinite;
+          animation-delay: 2s;
         }
       `;
 
