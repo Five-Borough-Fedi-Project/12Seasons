@@ -52,20 +52,42 @@ export default {
 
       const cssWind = `
         /* WEATHER: WIND */
-        body { animation: wind-shake 0.5s infinite; }
+        body::before,
         body::after { 
-          content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+          content: ""; position: fixed; top: 0; left: 0; width: 200%; height: 100%; 
           pointer-events: none; z-index: 9999; 
-          background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%); 
-          background-size: 200% 100%; 
-          animation: wind-blow 1s linear infinite; 
         }
-        @keyframes wind-shake { 
-          0%, 100% { transform: translateX(0); } 
-          25% { transform: translateX(1px); } 
-          75% { transform: translateX(-1px); } 
+        body::before {
+          background: repeating-linear-gradient(
+            95deg,
+            transparent 0px,
+            transparent 80px,
+            rgba(255,255,255,0.03) 80px,
+            rgba(255,255,255,0.06) 120px,
+            rgba(255,255,255,0.03) 160px,
+            transparent 160px,
+            transparent 300px
+          );
+          animation: wind-wisp 4s linear infinite;
         }
-        @keyframes wind-blow { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+        body::after {
+          background: repeating-linear-gradient(
+            92deg,
+            transparent 0px,
+            transparent 120px,
+            rgba(255,255,255,0.02) 120px,
+            rgba(255,255,255,0.05) 180px,
+            rgba(255,255,255,0.02) 240px,
+            transparent 240px,
+            transparent 400px
+          );
+          animation: wind-wisp 6s linear infinite;
+          animation-delay: -2s;
+        }
+        @keyframes wind-wisp { 
+          from { transform: translateX(0); } 
+          to { transform: translateX(-50%); } 
+        }
       `;
 
       // --- LOGIC PRIORITY ---
