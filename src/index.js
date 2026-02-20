@@ -24,15 +24,46 @@ export default {
       // --- CSS TEMPLATES ---
       const cssRain = `
         /* WEATHER: RAIN */
+        body::before,
         body::after { 
-          content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-          pointer-events: none; z-index: 9999; 
-          background-image: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 100%); 
-          background-size: 2px 30px; 
-          animation: rain-fall 0.3s linear infinite; 
-          opacity: 0.3; 
+          content: ""; 
+          position: fixed; 
+          top: 0; 
+          left: 0; 
+          width: 100%; 
+          height: 100%; 
+          pointer-events: none; 
+          z-index: 9999;
         }
-        @keyframes rain-fall { from { background-position: 0 0; } to { background-position: 0 100vh; } }
+        body::before {
+          background-image: 
+            radial-gradient(ellipse 2px 6px at 10% 20%, rgba(180,200,220,0.4) 0%, transparent 100%),
+            radial-gradient(ellipse 2px 5px at 25% 60%, rgba(180,200,220,0.35) 0%, transparent 100%),
+            radial-gradient(ellipse 1.5px 5px at 40% 10%, rgba(180,200,220,0.3) 0%, transparent 100%),
+            radial-gradient(ellipse 2px 6px at 55% 45%, rgba(180,200,220,0.4) 0%, transparent 100%),
+            radial-gradient(ellipse 1.5px 4px at 70% 75%, rgba(180,200,220,0.35) 0%, transparent 100%),
+            radial-gradient(ellipse 2px 5px at 85% 30%, rgba(180,200,220,0.3) 0%, transparent 100%),
+            radial-gradient(ellipse 1.5px 5px at 95% 55%, rgba(180,200,220,0.4) 0%, transparent 100%);
+          background-size: 100% 120px;
+          animation: rain-drop 1.2s linear infinite;
+        }
+        body::after {
+          background-image: 
+            radial-gradient(ellipse 1.5px 5px at 5% 40%, rgba(180,200,220,0.35) 0%, transparent 100%),
+            radial-gradient(ellipse 2px 6px at 18% 80%, rgba(180,200,220,0.3) 0%, transparent 100%),
+            radial-gradient(ellipse 2px 5px at 32% 25%, rgba(180,200,220,0.4) 0%, transparent 100%),
+            radial-gradient(ellipse 1.5px 4px at 48% 65%, rgba(180,200,220,0.35) 0%, transparent 100%),
+            radial-gradient(ellipse 2px 6px at 62% 15%, rgba(180,200,220,0.3) 0%, transparent 100%),
+            radial-gradient(ellipse 1.5px 5px at 78% 50%, rgba(180,200,220,0.4) 0%, transparent 100%),
+            radial-gradient(ellipse 2px 5px at 90% 85%, rgba(180,200,220,0.35) 0%, transparent 100%);
+          background-size: 100% 150px;
+          animation: rain-drop 1.8s linear infinite;
+          animation-delay: 0.4s;
+        }
+        @keyframes rain-drop { 
+          from { background-position: 0 -120px; } 
+          to { background-position: 0 100vh; } 
+        }
       `;
 
       const cssSnow = `
