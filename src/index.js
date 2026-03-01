@@ -1,8 +1,8 @@
 export default {
   async fetch(request, env, ctx) {
-    // 1. Fetch Weather from the specific Open-Meteo URL provided
-    // This requests: Rain, Showers, Snowfall, Wind Gusts, and Wind Direction
-    const weatherUrl = "https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.006&current=rain,showers,snowfall,wind_gusts_10m,wind_direction_10m";
+    // 1. Fetch hourly Weather from Open-Meteo (past 1hr + next 2hrs)
+    // Uses higher-altitude wind speeds (80m, 120m, 180m) for better detection
+    const weatherUrl = "https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.006&hourly=snowfall,rain,showers,wind_speed_80m,wind_speed_120m,wind_speed_180m&past_hours=1&forecast_hours=2";
     
     let css = "/* Weather: Clear */"; // Default state
     
@@ -10,16 +10,32 @@ export default {
       const response = await fetch(weatherUrl);
       const data = await response.json();
       
-      // Extract the specific 'current' data points
-      const current = data.current;
-      const rainAmount = (current.rain || 0) + (current.showers || 0); // Combine rain + showers
-      const snowAmount = current.snowfall || 0;
-      const windGusts = current.wind_gusts_10m || 0;
+      // Extract hourly data and scan the full window (±1 hour around now)
+      const hourly = data.hourly;
+      const times = hourly.time || [];
+      
+      // Aggregate: check if ANY hour in the window has weather
+      let maxRain = 0;
+      let maxSnow = 0;
+      let maxWind = 0;
+      
+      for (let i = 0; i < times.length; i++) {
+        const rain = (hourly.rain?.[i] || 0) + (hourly.showers?.[i] || 0);
+        const snow = hourly.snowfall?.[i] || 0;
+        const wind = Math.max(
+          hourly.wind_speed_80m?.[i] || 0,
+          hourly.wind_speed_120m?.[i] || 0,
+          hourly.wind_speed_180m?.[i] || 0
+        );
+        maxRain = Math.max(maxRain, rain);
+        maxSnow = Math.max(maxSnow, snow);
+        maxWind = Math.max(maxWind, wind);
+      }
       
       // Threshold definitions
-      const isRaining = rainAmount > 0.1; // More than 0.1mm is visible rain
-      const isSnowing = snowAmount > 0.0; // Any snow is visible
-      const isWindy = windGusts > 45;     // > 45 km/h gusts (approx 28mph) counts as "really windy"
+      const isRaining = maxRain > 0.1; // More than 0.1mm is visible rain
+      const isSnowing = maxSnow > 0.0; // Any snow is visible
+      const isWindy = maxWind > 45;    // > 45 km/h sustained at altitude counts as "really windy"
 
       // --- CSS TEMPLATES ---
       const cssRain = `
